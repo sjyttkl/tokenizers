@@ -54,7 +54,7 @@ fs.writeFileSync(`${distPath}/package.json`, JSON.stringify(npmPackageJson, null
 
 shell.mkdir("./bin-package");
 shell.cp("./native/index.node", "./bin-package");
-shell.exec("./node_modules/.bin/node-pre-gyp package");
+shell.exec("npm run package");
 var tgz = shell.exec("find ./build -name *.tar.gz");
 shell.cp(tgz, "./bin-package/");
 shell.pushd(distPath);
