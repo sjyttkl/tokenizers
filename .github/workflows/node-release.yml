@@ -34,6 +34,7 @@ jobs:
       
       - name: Get package version
         id: package_version
+        working-directory: ./bindings/node
         run: |
           echo "::set-env name=package_version::$(npx -c 'echo "$npm_package_version"')"
           echo "::set-output name=package_version::$(npx -c 'echo "$npm_package_version"')"
