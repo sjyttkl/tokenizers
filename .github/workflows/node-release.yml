@@ -1,5 +1,10 @@
 name: Node Release
 
+env:
+  AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+  AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+  AWS_DEFAULT_REGION: us-east-1
+
 on:
   push:
     tags:
@@ -14,35 +19,31 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v1
 
-      # - name: Install Rust
-      #   uses: actions-rs/toolchain@v1
-      #   with:
-      #     toolchain: nightly-2019-11-01
-      #     override: true
+      - name: Install Rust
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: nightly-2019-11-01
+          override: true
 
       - name: Install Node 10.x
         uses: actions/setup-node@v1
         with:
           node-version: '10.x'
 
-      # - name: Install dependencies
-      #   working-directory: ./bindings/node
-      #   run: npm ci
+      - name: Install dependencies
+        working-directory: ./bindings/node
+        run: npm ci
 
-      # - working-directory: ./bindings/node
-      #   run: node publish.js
+      - working-directory: ./bindings/node
+        run: node publish.js
       
       - name: Get package version
         id: package_version
         working-directory: ./bindings/node
-        run: |
-          echo "::set-env name=package_version::$(npx -c 'echo "$npm_package_version"')"
-          echo "::set-output name=package_version::$(npx -c 'echo "$npm_package_version"')"
+        run: echo "::set-env name=PACKAGE_VERSION::$(npx -c 'echo "$npm_package_version"')"
 
       - name: Upload tarball
         working-directory: ./bindings/node
         shell: bash
         run: |
-          echo "output: ${{ steps.package_version.outputs.package_version }}"
-          echo "env: ${{ steps.package_version.env.package_version }}"
-          echo "env bis: $package_version"
+          aws s3 sync --exact-timestamps --exclude "*" --include "*.tar.gz" ./bindings/node/bin-package "s3://tokenizers-releases/node/test"
