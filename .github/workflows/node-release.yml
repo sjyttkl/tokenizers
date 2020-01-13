@@ -11,6 +11,12 @@ jobs:
     steps:
       - uses: actions/checkout@v1
 
+      - name: Install Rust
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: nightly-2019-11-01
+          override: true
+
       - uses: actions/setup-node@v1
         with:
           node-version: '10.x'
