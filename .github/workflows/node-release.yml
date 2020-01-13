@@ -1,9 +1,9 @@
 name: Node Release
 
-env:
-  AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-  AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-  AWS_DEFAULT_REGION: us-east-1
+# env:
+#   AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+#   AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+#   AWS_DEFAULT_REGION: us-east-1
 
 on:
   push:
@@ -24,15 +24,15 @@ jobs:
       - working-directory: ./bindings/node
         run: echo "::set-env name=PACKAGE_VERSION::$(npx -c 'echo "$npm_package_version"')"
 
-  node_pre_gyp:
-    needs: package_version
-    strategy:
-      matrix:
-        node-version: [13.x]
-    runs-on: macos-latest
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v1
+  # node_pre_gyp:
+  #   needs: package_version
+  #   strategy:
+  #     matrix:
+  #       node-version: [13.x]
+  #   runs-on: windows-latest
+  #   steps:
+  #     - name: Checkout repository
+  #       uses: actions/checkout@v1
 
       # - name: Install Rust
       #   uses: actions-rs/toolchain@v1
