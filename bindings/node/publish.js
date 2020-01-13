@@ -34,12 +34,12 @@ shell.rm("-rf", "./bin-package");
 shell.rm("-rf", "./build");
 
 // Cleanup any previous Rust builds, update deps, and compile
-// shell.exec("npm install --ignore-scripts");
-// shell.exec("npm run clean");
-// shell.pushd("./native");
-// shell.exec("cargo update");
-// shell.popd();
-// shell.exec("npm run compile");
+shell.exec("npm install --ignore-scripts");
+shell.exec("npm run clean");
+shell.pushd("./native");
+shell.exec("cargo update");
+shell.popd();
+shell.exec("npm run compile");
 
 // shell.exec("npm test");
 shell.mkdir(distPath);
@@ -48,19 +48,19 @@ shell.cp("-r", ["package.json", "../../LICENSE"], distPath);
 
 // Add a NPM install script to the package.json that we push to NPM so that when consumers pull it down it
 // runs the expected node-pre-gyp step.
-// const npmPackageJson = require(`${distPath}/package.json`);
-// npmPackageJson.scripts.install = "node-pre-gyp install";
-// fs.writeFileSync(`${distPath}/package.json`, JSON.stringify(npmPackageJson, null, 2));
+const npmPackageJson = require(`${distPath}/package.json`);
+npmPackageJson.scripts.install = "node-pre-gyp install";
+fs.writeFileSync(`${distPath}/package.json`, JSON.stringify(npmPackageJson, null, 2));
 
-// shell.mkdir("./bin-package");
-// shell.cp("./native/index.node", "./bin-package");
-// shell.exec("./node_modules/.bin/node-pre-gyp package");
-// var tgz = shell.exec("find ./build -name *.tar.gz");
-// shell.cp(tgz, "./bin-package/");
-// shell.pushd(distPath);
+shell.mkdir("./bin-package");
+shell.cp("./native/index.node", "./bin-package");
+shell.exec("./node_modules/.bin/node-pre-gyp package");
+var tgz = shell.exec("find ./build -name *.tar.gz");
+shell.cp(tgz, "./bin-package/");
+shell.pushd(distPath);
 
-// shell.exec(shouldPublish ? "npm publish --access public" : "echo 'Skipping publishing to npm...'");
-// shell.popd();
+shell.exec(shouldPublish ? "npm publish --access public" : "echo 'Skipping publishing to npm...'");
+shell.popd();
 
 shell.echo("publish.js COMPLETE");
 
