@@ -42,8 +42,14 @@ jobs:
         working-directory: ./bindings/node
         run: echo "::set-env name=PACKAGE_VERSION::$(npx -c 'echo "$npm_package_version"')"
 
+      - name: Install Python
+        uses: actions/setup-python@v1
+        with:
+          python-version: 3.x
+
       - name: Upload tarball
         working-directory: ./bindings/node
         shell: bash
         run: |
+          pip install awscli
           aws s3 sync --exact-timestamps --exclude "*" --include "*.tar.gz" ./bindings/node/bin-package "s3://tokenizers-releases/node/test"
