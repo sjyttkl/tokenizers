@@ -18,6 +18,9 @@ jobs:
     name: Get package version
     steps:
       - uses: actions/checkout@v1
+      - uses: actions/setup-node@v1
+        with:
+          node-version: 12.x
       - working-directory: ./bindings/node
         run: echo "::set-env name=PACKAGE_VERSION::$(npx -c 'echo "$npm_package_version"')"
 
