@@ -2,6 +2,8 @@ name: Node Release
 
 on:
   push:
+    tags:
+      - tokenizers-node-v*
     branches:
       - node-workflow
 
@@ -9,20 +11,37 @@ jobs:
   node_pre_gyp:
     runs-on: macos-latest
     steps:
-      - uses: actions/checkout@v1
+      - name: Checkout repository
+        uses: actions/checkout@v1
 
-      - name: Install Rust
-        uses: actions-rs/toolchain@v1
-        with:
-          toolchain: nightly-2019-11-01
-          override: true
+      # - name: Install Rust
+      #   uses: actions-rs/toolchain@v1
+      #   with:
+      #     toolchain: nightly-2019-11-01
+      #     override: true
 
-      - uses: actions/setup-node@v1
-        with:
-          node-version: '10.x'
+      # - name: Install Node 10.x
+      #   uses: actions/setup-node@v1
+      #   with:
+      #     node-version: '10.x'
 
-      - working-directory: ./bindings/node
-        run: npm install
+      # - name: Install dependencies
+      #   working-directory: ./bindings/node
+      #   run: npm ci
 
-      - working-directory: ./bindings/node
-        run: node publish.js
+      # - working-directory: ./bindings/node
+      #   run: node publish.js
+      
+      - name: Get package version
+        id: package_version
+        run: |
+          echo "::set-env name=package_version::$(npx -c 'echo "$npm_package_version"')"
+          echo "::set-output name=package_version::$(npx -c 'echo "$npm_package_version"')"
+
+      - name: Upload tarball
+        working-directory: ./bindings/node
+        shell: bash
+        run: |
+          echo "output: ${{ steps.package_version.outputs.package_version }}"
+          echo "env: ${{ steps.package_version.env.package_version }}"
+          echo "env bis: $package_version"
