@@ -20,10 +20,10 @@ jobs:
       #     toolchain: nightly-2019-11-01
       #     override: true
 
-      # - name: Install Node 10.x
-      #   uses: actions/setup-node@v1
-      #   with:
-      #     node-version: '10.x'
+      - name: Install Node 10.x
+        uses: actions/setup-node@v1
+        with:
+          node-version: '10.x'
 
       # - name: Install dependencies
       #   working-directory: ./bindings/node
