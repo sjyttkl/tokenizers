@@ -14,6 +14,7 @@ on:
 
 jobs:
   node_pre_gyp:
+    needs: package_version
     runs-on: macos-latest
     steps:
       - name: Checkout repository
@@ -36,7 +37,7 @@ jobs:
 
       - working-directory: ./bindings/node
         run: node publish.js
-      
+
       - name: Get package version
         id: package_version
         working-directory: ./bindings/node
@@ -48,7 +49,6 @@ jobs:
           python-version: 3.x
 
       - name: Upload tarball
-        working-directory: ./bindings/node
         shell: bash
         run: |
           pip install awscli
