@@ -16,7 +16,7 @@ jobs:
   node_pre_gyp:
     strategy:
       matrix:
-        os: [windows-latest, macos-latest]
+        os: [windows-latest]
         node-version: [12.x]
     runs-on: ${{ matrix.os }}
     steps:
@@ -44,7 +44,10 @@ jobs:
       - name: Get package version
         id: package_version
         working-directory: ./bindings/node
-        run: echo "::set-env name=PACKAGE_VERSION::$(npx -c 'echo "$npm_package_version"')"
+        run: | 
+          node -e "console.log(\"::set-env name=PACKAGE_VERSION::$(npx -c 'echo "$npm_package_version"')\")"
+        # python -c "print(\"::set-env name=PACKAGE_VERSION::$(npx -c 'echo "$npm_package_version"')\")"
+        # echo "::set-env name=PACKAGE_VERSION::$(npx -c 'echo "$npm_package_version"')"
 
       - run: echo "$PACKAGE_VERSION"
 
