@@ -41,20 +41,20 @@ jobs:
       # - working-directory: ./bindings/node
       #   run: node publish.js
 
+      - name: Install Python
+        uses: actions/setup-python@v1
+        with:
+          python-version: 3.x
+
       - name: Get package version
         id: package_version
         working-directory: ./bindings/node
         run: | 
-          node -p "\"::set-env name=PACKAGE_VERSION::$(npx -c 'echo "$npm_package_version"')\""
-        # python -c "print(\"::set-env name=PACKAGE_VERSION::$(npx -c 'echo "$npm_package_version"')\")"
+          python -c "print(\"::set-env name=PACKAGE_VERSION::$(npx -c 'echo "$npm_package_version"')\")"
+        # node -p "\"::set-env name=PACKAGE_VERSION::$(npx -c 'echo "$npm_package_version"')\""
         # echo "::set-env name=PACKAGE_VERSION::$(npx -c 'echo "$npm_package_version"')"
 
       - run: echo "$PACKAGE_VERSION"
-
-      # - name: Install Python
-      #   uses: actions/setup-python@v1
-      #   with:
-      #     python-version: 3.x
 
       # - name: Upload tarball
       #   shell: bash
