@@ -45,7 +45,7 @@ jobs:
         id: package_version
         working-directory: ./bindings/node
         run: | 
-          node -e "console.log(\"::set-env name=PACKAGE_VERSION::$(npx -c 'echo "$npm_package_version"')\")"
+          node -p "\"::set-env name=PACKAGE_VERSION::$(npx -c 'echo "$npm_package_version"')\""
         # python -c "print(\"::set-env name=PACKAGE_VERSION::$(npx -c 'echo "$npm_package_version"')\")"
         # echo "::set-env name=PACKAGE_VERSION::$(npx -c 'echo "$npm_package_version"')"
 
