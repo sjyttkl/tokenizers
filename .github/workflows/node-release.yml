@@ -23,41 +23,31 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v1
 
-      # - name: Install Rust
-      #   uses: actions-rs/toolchain@v1
-      #   with:
-      #     toolchain: nightly-2019-11-01
-      #     override: true
+      - name: Install Rust
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: nightly-2019-11-01
+          override: true
 
       - name: Install Node ${{ matrix.node-version }}
         uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node-version }}
 
-      # - name: Install dependencies
-      #   working-directory: ./bindings/node
-      #   run: npm ci
-
-      # - working-directory: ./bindings/node
-      #   run: node publish.js
-
-      #- name: Install Python
-      #  uses: actions/setup-python@v1
-      #  with:
-      #    python-version: 3.x
-
-      - name: Get package version
-        id: package_version
+      - name: Install dependencies
         working-directory: ./bindings/node
-        run: | 
-          echo "::set-env name=PACKAGE_VERSION::$(npx -c 'echo "%npm_package_version%')"
-        # python -c "print(\"::set-env name=PACKAGE_VERSION::$(npx -c 'echo "$npm_package_version"')\")"
-        # node -p "\"::set-env name=PACKAGE_VERSION::$(npx -c 'echo "$npm_package_version"')\""
+        run: npm ci
 
-      - run: echo "$PACKAGE_VERSION"
+      - working-directory: ./bindings/node
+        run: node publish.js
 
-      # - name: Upload tarball
-      #   shell: bash
-      #   run: |
-      #     pip install awscli
-      #     aws s3 sync --exact-timestamps --exclude "*" --include "*.tar.gz" ./bindings/node/bin-package "s3://tokenizers-releases/node/test"
+      - name: Install Python
+        uses: actions/setup-python@v1
+        with:
+          python-version: 3.x
+
+      - name: Upload tarball
+        shell: bash
+        run: |
+          pip install awscli
+          aws s3 sync --exact-timestamps --exclude "*" --include "*.tar.gz" ./bindings/node/bin-package "s3://tokenizers-releases/node/$(npx -c 'echo "%npm_package_version%')"
