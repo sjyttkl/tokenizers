@@ -1,9 +1,13 @@
-var addon = require('../bin-package');
+const native = require("./native");
 
 module.exports = {
-  byteLevelPreTokenizer:  addon.pre_tokenizers_ByteLevel,
-  byteLevelAlphabet:      addon.pre_tokenizers_ByteLevel_Alphabet,
-  whitespacePreTokenizer: addon.pre_tokenizers_Whitespace,
-  bertPreTokenizer:       addon.pre_tokenizers_BertPreTokenizer,
-  metaspacePreTokenizer:  addon.pre_tokenizers_Metaspace
+  byteLevelPreTokenizer: native.pre_tokenizers_ByteLevel,
+  byteLevelAlphabet: native.pre_tokenizers_ByteLevel_Alphabet,
+  whitespacePreTokenizer: native.pre_tokenizers_Whitespace,
+  whitespaceSplitPreTokenizer: native.pre_tokenizers_WhitespaceSplit,
+  bertPreTokenizer: native.pre_tokenizers_BertPreTokenizer,
+  metaspacePreTokenizer: native.pre_tokenizers_Metaspace,
+  charDelimiterSplitPreTokenizer: native.pre_tokenizers_CharDelimiterSplit,
+  punctuationPreTokenizer: native.pre_tokenizers_Punctuation,
+  sequencePreTokenizer: native.pre_tokenizers_Sequence,
 };

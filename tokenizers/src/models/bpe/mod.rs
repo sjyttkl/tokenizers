@@ -1,8 +1,8 @@
 //! [Byte Pair Encoding](https://www.aclweb.org/anthology/P16-1162/) model.
 use std::{convert::From, io, iter, mem};
 
-mod cache;
 mod model;
+mod serialization;
 mod trainer;
 mod word;
 
@@ -110,7 +110,6 @@ where
 }
 
 // Re-export
-pub use cache::*;
 pub use model::*;
 pub use trainer::*;
 use word::*;
